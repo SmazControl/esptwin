@@ -1,16 +1,16 @@
 #include <Wire.h> // Only needed for Arduino 1.6.5 and earlier
 #include "SSD1306.h"
 SSD1306 display(0x3c, 21, 22);
-const int BUTTON_Next = 0; // 0,3,11 only
-const int BUTTON_Prev = 3; // 0,3,11 only
-const int BUTTON_Setup = 11; // 0,3,11 only
+const int BUTTON_Next = 4;
+const int BUTTON_Prev = 16;
+const int BUTTON_Setup = 17;
 int page = 1;
 void setup() {
   Wire.begin();
   Serial.begin(115200);
-  pinMode(BUTTON_Next, INPUT_PULLDOWN);
-  pinMode(BUTTON_Prev, INPUT_PULLDOWN);
-  pinMode(BUTTON_Setup, INPUT_PULLDOWN);
+  pinMode(BUTTON_Next, INPUT);
+  pinMode(BUTTON_Prev, INPUT);
+  pinMode(BUTTON_Setup, INPUT);
   // Initialising the UI will init the display too.
   display.init();
   display.flipScreenVertically();
@@ -26,9 +26,9 @@ String Line[4] = {"","1 Set Temp","2 Set Rh","3 Default Reset"};
 void loop(){
   int ppage = page;
   int psetup_line = setup_line;
-  if (digitalRead(BUTTON_Next) == LOW)
+  if (digitalRead(BUTTON_Next) == HIGH)
   { // Check if button has been pressed
-    while (digitalRead(BUTTON_Next) == LOW)
+    while (digitalRead(BUTTON_Next) == HIGH)
     { delay(100); }
     Serial.println("Press Next");
     if (setup_page) {
@@ -39,9 +39,9 @@ void loop(){
       if (page>3) { page = 1; }
     }
   }
-  if (digitalRead(BUTTON_Prev) == LOW)
+  if (digitalRead(BUTTON_Prev) == HIGH)
   { // Check if button has been pressed
-    while (digitalRead(BUTTON_Prev) == LOW)
+    while (digitalRead(BUTTON_Prev) == HIGH)
     { delay(100); }
     Serial.println("Press Prev");
     if (setup_page) {
@@ -52,9 +52,9 @@ void loop(){
       if (page==0) { page = 3; }
     }
   }
-  if (digitalRead(BUTTON_Setup) == LOW)
+  if (digitalRead(BUTTON_Setup) == HIGH)
   { // Check if button has been pressed
-    while (digitalRead(BUTTON_Setup) == LOW)
+    while (digitalRead(BUTTON_Setup) == HIGH)
     { delay(100); }
     Serial.println("Press Setup");
     if (setup_page) {
