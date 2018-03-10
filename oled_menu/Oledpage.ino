@@ -1,16 +1,16 @@
 #include <Wire.h> // Only needed for Arduino 1.6.5 and earlier
 #include "SSD1306.h"
 SSD1306 display(0x3c, 21, 22);
-const int BUTTON_Next = 4;
-const int BUTTON_Prev = 16;
-const int BUTTON_Setup = 17;
+const int BUTTON_Next = 16;
+const int BUTTON_Prev = 17;
+const int BUTTON_Setup = 5;
 int page = 1;
 void setup() {
   Wire.begin();
   Serial.begin(115200);
-  pinMode(BUTTON_Next, INPUT);
-  pinMode(BUTTON_Prev, INPUT);
-  pinMode(BUTTON_Setup, INPUT);
+  pinMode(BUTTON_Next, INPUT_PULLDOWN);
+  pinMode(BUTTON_Prev, INPUT_PULLDOWN);
+  pinMode(BUTTON_Setup, INPUT_PULLDOWN);
   // Initialising the UI will init the display too.
   display.init();
   display.flipScreenVertically();
