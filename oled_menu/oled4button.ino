@@ -1,22 +1,47 @@
 //#include <Wire.h> // Only needed for Arduino 1.6.5 and earlier
 #include "SSD1306.h"
 SSD1306 display(0x3c, 21, 22);
-const int BUTTON_Next = 4; 
-const int BUTTON_Prev = 16; 
-const int BUTTON_Setup = 17;
-const int BUTTON_Enter = 13;
+const int BUTTON_Next = 16; 
+const int BUTTON_Prev = 17; 
+const int BUTTON_Setup = 5;
+const int BUTTON_Enter = 18;
 int page = 1;
 void setup() {
   Wire.begin();
   Serial.begin(115200);
-  pinMode(BUTTON_Next, INPUT);
-  pinMode(BUTTON_Prev, INPUT);
-  pinMode(BUTTON_Setup, INPUT);
+  pinMode(BUTTON_Next, INPUT_PULLDOWN);
+  pinMode(BUTTON_Prev, INPUT_PULLDOWN);
+  pinMode(BUTTON_Setup, INPUT_PULLDOWN);
+  pinMode(BUTTON_Enter, INPUT_PULLDOWN);
   // Initialising the UI will init the display too.
   display.init();
   display.flipScreenVertically();
   display.setFont(ArialMT_Plain_10);
   display.setTextAlignment(TEXT_ALIGN_LEFT);
+  display.clear();
+  display.drawString(47,0,"Initialize");
+  Serial.println("Inititalize...");
+  Serial.println("Don't press button");
+  if ((digitalRead(BUTTON_Next) == HIGH) ||
+      (digitalRead(BUTTON_Prev) == HIGH) ||
+      (digitalRead(BUTTON_Setup) == HIGH) ||
+      (digitalRead(BUTTON_Enter) == HIGH)) {
+    Serial.println("Error Pin Setting");
+    display.drawString(30,30,"Error Pin Setting");
+    display.display();
+    while(true) {
+      Serial.print("Next ");
+      Serial.println(digitalRead(BUTTON_Next));     
+      Serial.print("Prev ");
+      Serial.println(digitalRead(BUTTON_Prev));     
+      Serial.print("Setup ");
+      Serial.println(digitalRead(BUTTON_Setup));     
+      Serial.print("Enter ");
+      Serial.println(digitalRead(BUTTON_Enter));
+      delay(100);     
+    }
+  }
+  display.display();
   display.clear();
 }
 
